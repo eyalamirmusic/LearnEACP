@@ -32,6 +32,19 @@ CPMAddPackage(
         GIT_TAG main
         NO_CACHE YES)
 
+# ECode, the code viewer the Tour shows each chapter's source in: a read-only
+# editor drawn on the GPU, its widgets and a tree-sitter C++ highlighter.
+#
+# ECode fetches EACP itself under the same CPM name, so it has to come after
+# the call above: CPM then reuses that checkout rather than cloning a second
+# one, and the first call's options are the ones that take effect. NO_CACHE
+# for the same reason as EACP's: it tracks main.
+CPMAddPackage(
+        NAME ECode
+        GITHUB_REPOSITORY eyalamirmusic/ECode
+        GIT_TAG main
+        NO_CACHE YES)
+
 # learneacp_add_chapter, which every chapter's CMakeLists.txt calls.
 include(LearnEACP)
 
@@ -40,6 +53,6 @@ add_subdirectory(Lib)
 
 add_subdirectory(Tutorials)
 
-# Links every chapter's registry build into one program and checks they all
-# registered. Comes after Tutorials, whose chapters it links.
-add_subdirectory(Tools/ChapterRegistryCheck)
+# The Tour: every chapter in one window, its code beside its result. Comes
+# after Tutorials, whose chapters it links.
+add_subdirectory(Apps/Tour)

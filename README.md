@@ -8,7 +8,8 @@ same code runs on Metal, Direct3D 12 and Vulkan.
 
 Each chapter is a small, complete program with a written walkthrough. Start at
 chapter 1 and work forward: every chapter builds on the ideas of the ones
-before it.
+before it. All the chapters can also be explored in one app, the Tour, which
+shows each chapter's code next to its result.
 
 ## Prerequisites
 

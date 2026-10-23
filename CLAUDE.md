@@ -21,20 +21,49 @@ detail.
 
 ## Layout
 
-- `CMakeLists.txt` — fetches EACP with CPM (`CMake/CPM.cmake`), includes
-  `CMake/LearnEACP.cmake` and adds `Lib/`, `Tutorials/` and
-  `Tools/ChapterRegistryCheck/`.
+- `CMakeLists.txt` — fetches EACP and then ECode with CPM (`CMake/CPM.cmake`),
+  includes `CMake/LearnEACP.cmake` and adds `Lib/`, `Tutorials/` and
+  `Apps/Tour/`.
 - `CMake/LearnEACP.cmake` — `learneacp_add_chapter()`, the one call in every
-  chapter's `CMakeLists.txt`.
+  chapter's `CMakeLists.txt`, and `learneacp_embed_chapter_sources(<target>)`,
+  which compiles every chapter's `Main.cpp` into a target as data.
+- `CMake/EmbedSource.cmake` — the script-mode build step behind it: one
+  `Main.cpp` to a `.cpp` holding its lines as raw string literals.
 - `Lib/LearnEACP/Chapter.h` — the `learneacp-chapter` INTERFACE target:
   the `LEARNEACP_CHAPTER` / `LEARNEACP_CONSOLE_CHAPTER` macros and the chapter
   registry (`LearnEACP::registeredChapters()`).
+- `Lib/LearnEACP/ChapterSource.h` — `LearnEACP::ChapterSource` (path and lines)
+  and `findChapterSource(name)`, defined by the generated code.
 - `Tutorials/CMakeLists.txt` — one `add_subdirectory` per chapter, in order.
 - `Tutorials/NN-ChapterName/` — one chapter per directory.
-- `Tools/ChapterRegistryCheck/` — a temporary console program that links every
-  chapter's registry build into one binary, prints the chapters in order and
-  exits 0 only if all of them registered. It proves the chapters link
-  together; the planned Tour app replaces it.
+- `Apps/Tour/` — the `Tour` app: every chapter in one window (see below).
+
+## The Tour
+
+`Tour` links every library in `LEARNEACP_CHAPTER_LIBRARIES` (so it is added
+after `Tutorials/`) and embeds every `Main.cpp`; a changed `Main.cpp` is
+re-embedded on the next build. Its chrome is ECode widgets drawn in GPUViews
+(`WidgetView`, after shadertoyeacp's Gallery), and the code pane is ECode's
+read-only `CodeEditorView` with the tree-sitter C++ `SyntaxHighlighter`.
+
+- `Tour.{h,cpp}` — `App` (chapter switching, menu bar, screenshot),
+  `Layout` (toolbar, sidebar, code and result per layout mode) and
+  `ResultArea`, the only owner of the chapter's view: switching builds the new
+  view, swaps it in and destroys the old one, then focuses it.
+- `Chrome.{h,cpp}` — `Button`, `Header`, `Toolbar`, `Sidebar`.
+- `Panes.{h,cpp}` — `CodePane`, `ConsolePane` and `runCapturingOutput`, which
+  runs a console chapter with stdout/stderr redirected (dup2 to a temporary
+  file) and echoes what it printed afterwards.
+- Chapters keep plain keys; host shortcuts are menu items with Cmd: Cmd+1..4
+  layouts (result, side by side, stacked, code), Cmd+[ / Cmd+] previous/next
+  chapter, Cmd+B chapter list, Cmd+R reload (runs chapter 10 again).
+- Panes that are not shown are removed from the view tree, not hidden:
+  `View::renderToImage` draws hidden views.
+
+ECode (github.com/eyalamirmusic/ECode, `GIT_TAG main`, `NO_CACHE`) lives under
+`build/_deps/ecode-src`. It fetches EACP under the same CPM name, so its
+`CPMAddPackage` must stay after EACP's: CPM then reuses EACP's checkout and the
+first call's options win.
 
 ## Chapter conventions
 
@@ -85,5 +114,14 @@ On macOS a chapter runs as
 `build/Tutorials/<dir>/<Target>.app/Contents/MacOS/<Target>`. Windowed
 chapters run until closed; `Compute` (chapter 10) prints its results and exits
 with status 0 when the GPU and CPU results match.
-`build/Tools/ChapterRegistryCheck/ChapterRegistryCheck.app/Contents/MacOS/ChapterRegistryCheck`
-lists every chapter and exits with status 0 when all of them registered.
+
+The Tour runs as `build/Apps/Tour/Tour.app/Contents/MacOS/Tour`:
+
+- `--list` prints every chapter and exits with status 0 only when all of them
+  registered, in order, each with one entry point and an embedded source.
+- `--chapter <N|Name>` (default 1), `--layout result|side-by-side|stacked|code`
+  (default side-by-side) and `--no-sidebar` choose how it opens.
+- `--screenshot <path.png> [--after <seconds>]` opens the window, waits
+  (default 2 s, then until the code is highlighted, up to 5 s more), renders the
+  whole window to a PNG with `View::renderToImage` and exits 0, or 1 on failure.
+  Bad arguments exit 2.
