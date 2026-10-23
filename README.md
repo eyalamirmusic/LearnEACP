@@ -82,6 +82,19 @@ build/Tutorials/10-Compute/Compute                              # Windows and Li
 | 8 | [Coordinate Systems](Tutorials/08-CoordinateSystems) | Model, view and projection, perspective, depth testing and back-face culling on a spinning 3D cube. |
 | 9 | [Lighting](Tutorials/09-Lighting) | Normals, the normal matrix, and per-fragment ambient, diffuse and specular (Phong) lighting from an orbiting point light. |
 | 10 | [Compute](Tutorials/10-Compute) | A ComputeProgram, threadId, buffers, dispatch and read-back, plus the CPU executor, in a console program with no window. |
+| 11 | [Camera](Tutorials/11-Camera) | A fly camera: lookAt, yaw and pitch, mouse-drag look, scroll-wheel zoom and WASD movement scaled by the frame delta. |
+| 12 | [Lighting Maps](Tutorials/12-LightingMaps) | Material and light properties as grouped uniforms, and procedural diffuse and specular maps on a steel-framed wooden crate. |
+| 13 | [Light Casters](Tutorials/13-LightCasters) | Directional, point and spot lights as EDSL helper functions summed in one shader, with the point lights in a fragment-stage storage buffer. |
+| 14 | [Stencil Testing](Tutorials/14-StencilTesting) | The stencil buffer, its tests, operations, reference value and write mask: outlining objects with a scaled-up second pass. |
+| 15 | [Blending](Tutorials/15-Blending) | Discarding transparent texels, the blend equation as a BlendState, depth writes off for glass, and sorting transparent windows back to front. |
+| 16 | [Framebuffers](Tutorials/16-Framebuffers) | Rendering the scene into an offscreen colour and depth texture, then post-processing it on a full-screen quad with inversion, grayscale and kernels. |
+| 17 | [Cubemaps](Tutorials/17-Cubemaps) | A procedural cube map, Uniform<TextureCube>, a skybox drawn at the far plane, and environment-mapped reflection and refraction. |
+| 18 | [Instancing](Tutorials/18-Instancing) | instanceInput, setInstances and drawInstanced: a 12,000-rock asteroid ring in one draw call, timed against one draw per rock. |
+| 19 | [Anti-Aliasing](Tutorials/19-AntiAliasing) | Aliasing, supersampling and multisampling, the window's built-in MSAA, and a multisampled texture target resolved before it is read. |
+| 20 | [Shadow Mapping](Tutorials/20-ShadowMapping) | A depth-only pass from an orthographic sun, light-space lookup, slope-scaled bias against acne, out-of-frustum handling and 3x3 PCF. |
+| 21 | [Normal Mapping](Tutorials/21-NormalMapping) | A procedural tangent-space normal map, tangents and bitangents from UVs, the TBN matrix, and EACP's green-down convention. |
+| 22 | [HDR and Bloom](Tutorials/22-HDRBloom) | A half-float scene target, exposure and Reinhard tone mapping, gamma correction, and bloom from a separable Gaussian ping-pong blur. |
+| 23 | [Deferred Shading](Tutorials/23-DeferredShading) | A G-buffer filled by lighting-free geometry passes, then one full-screen pass that loops over 96 moving lights with light-volume radii. |
 
 ## Further reading
 

@@ -476,9 +476,11 @@ something to the GPU.
 
 ## Where to go from here
 
-This is the last chapter, and you now have the whole toolkit: the render
-pipeline, uniforms, textures, transformations, lighting and compute. The
-best next step is to read real programs. EACP's
+This chapter closes the first part of the series, and you now have the whole
+basic toolkit: the render pipeline, uniforms, textures, transformations,
+lighting and compute. The chapters that follow build on it with cameras,
+materials, offscreen passes and more advanced lighting. Alongside them, it
+pays to read real programs. EACP's
 [`Apps/GPU`](https://github.com/eyalamirmusic/eacp/tree/main/Apps/GPU)
 directory is full of them, each short and focused:
 
@@ -492,4 +494,4 @@ And when you want to know what else the EDSL can do, or why it refuses
 something, the [GPU README](https://github.com/eyalamirmusic/eacp/blob/main/Lib/eacp/GPU/README.md)
 is the reference everything in this series was built from.
 
-Previous: [09. Lighting](../09-Lighting/README.md)
+Previous: [09. Lighting](../09-Lighting/README.md) | Next: [11. Camera](../11-Camera/README.md)

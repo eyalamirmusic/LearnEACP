@@ -1,0 +1,6 @@
+eacp_add_app(NormalMapping Main.cpp)
+target_link_libraries(NormalMapping PRIVATE eacp-gpu)
+set_target_properties(NormalMapping PROPERTIES MACOSX_BUNDLE TRUE)
+
+eacp_set_gui_subsystem(NormalMapping)
+set_default_target_setting(NormalMapping)

@@ -1,0 +1,6 @@
+eacp_add_app(StencilTesting Main.cpp)
+target_link_libraries(StencilTesting PRIVATE eacp-gpu)
+set_target_properties(StencilTesting PROPERTIES MACOSX_BUNDLE TRUE)
+
+eacp_set_gui_subsystem(StencilTesting)
+set_default_target_setting(StencilTesting)
