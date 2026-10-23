@@ -56,3 +56,17 @@ add_subdirectory(Tutorials)
 # The Tour: every chapter in one window, its code beside its result. Comes
 # after Tutorials, whose chapters it links.
 add_subdirectory(Apps/Tour)
+
+# check-snippets: checks that every C++ snippet in a chapter's README matches
+# that chapter's Main.cpp, or is marked illustrative. Run on demand, never as
+# part of a normal build, and only offered when Python 3 is available.
+find_package(Python3 COMPONENTS Interpreter)
+
+if (Python3_Interpreter_FOUND)
+    add_custom_target(check-snippets
+            COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/Tools/check_snippets.py"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            COMMENT "Checking README snippets against each chapter's Main.cpp"
+            USES_TERMINAL
+            VERBATIM)
+endif ()

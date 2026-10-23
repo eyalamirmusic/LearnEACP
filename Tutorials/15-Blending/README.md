@@ -183,6 +183,7 @@ So the second piece of pipeline state for transparent geometry is
 so a crate in front of a window still hides it. Only the **write** goes:
 windows never hide each other, they only blend.
 
+<!-- snippet: illustrative -->
 ```cpp
 auto glass = foliage;
 glass.depthWrite = false;      // test against the opaque depth, never write it

@@ -390,6 +390,7 @@ LEARNEACP_CONSOLE_CHAPTER(Compute::runCompute)
 Where every windowed chapter ends with `LEARNEACP_CHAPTER`, this one ends with
 its console counterpart. Written by hand it is this `main`:
 
+<!-- snippet: illustrative -->
 ```cpp
 int main()
 {

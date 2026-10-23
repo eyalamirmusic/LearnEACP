@@ -105,6 +105,7 @@ several textures to a framebuffer and call `glDrawBuffers`; in EACP it is
 `Frame::beginMultiTargetPass`, which takes up to eight targets, each with its
 own clear colour:
 
+<!-- snippet: illustrative -->
 ```cpp
 const ColorTarget targets[] = {
     {&position, {0.f, 0.f, 0.f, 0.f}},

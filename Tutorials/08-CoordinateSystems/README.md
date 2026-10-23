@@ -379,7 +379,8 @@ diagram backwards: the model matrix touches the vertex first.
 2. With depth off and culling off, swap the order of the faces in
    `cubeIndices` and see different faces "win". *Hint: without a depth test the
    last triangle drawn over a pixel is the one you see.*
-3. Change `fovY` to 90 degrees and then to 20 degrees, moving the camera's eye
+3. Change the field of view, the `radians(45.0f)` passed to `Mat4::perspective`
+   as `fovY`, to 90 degrees and then to 20 degrees, moving the camera's eye
    further away to keep the cube a similar size. *Hint: a narrow field of view
    from far away flattens the perspective, like a telephoto lens.*
 4. Reverse one face's winding (swap two of its indices in both triangles) with

@@ -16,6 +16,7 @@ when you switch instancing off.
 
 Here is chapter 11's loop, slightly simplified:
 
+<!-- snippet: illustrative -->
 ```cpp
 for (const auto& object: objects)
 {

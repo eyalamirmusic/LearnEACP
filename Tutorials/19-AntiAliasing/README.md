@@ -136,6 +136,7 @@ renders into a hidden 4-sample colour texture (and a 4-sample depth buffer, if
 you called `setDepth`), and resolves it into the drawable the screen shows when
 the pass ends. That is why every chapter has prepared its pipelines with
 
+<!-- snippet: illustrative -->
 ```cpp
 shader.prepare(sampleCount());
 ```
@@ -154,6 +155,7 @@ guaranteed.
 A texture target is single-sampled unless you ask, which is what chapter 16
 ran into. Asking takes one field:
 
+<!-- snippet: illustrative -->
 ```cpp
 auto descriptor = TextureDescriptor {};
 descriptor.width = width;
@@ -311,7 +313,10 @@ resolve happens.
         fan.modelViewProjection = viewProjection * Mat4::rotationY(angle * 0.25f);
         pass.draw(fan);
 
-        cube.modelViewProjection = ...;
+        cube.modelViewProjection =
+            viewProjection * Mat4::translation({0.0f, 0.7f, 0.0f})
+            * Mat4::rotationY(angle) * Mat4::rotationX(angle * 0.7f)
+            * Mat4::scale(0.8f);
         pass.draw(cube);
     }
 ```
@@ -385,6 +390,7 @@ reads from around the focus point instead, six times closer:
 
 ```cpp
         auto pixel = uv * size;
+        auto sourceHalf = insetHalf / zoom;
 
         auto inInset = insideSquare(pixel, insetCenter, insetHalf);
         auto zoomed = focus + (pixel - insetCenter) / zoom;

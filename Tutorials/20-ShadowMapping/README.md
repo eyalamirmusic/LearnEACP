@@ -172,7 +172,8 @@ it:
     forEachObject(
         [&](const Mat4& model, Vec3, float)
         {
-            depthShader.lightModelViewProjection = lightViewProjection * model;
+            depthShader.lightModelViewProjection =
+                lightViewProjection * model;
             pass.draw(depthShader);
         });
 }
@@ -262,6 +263,7 @@ no surface has.
 The test is then one line. `step(edge, x)` is 1 when `x >= edge` and 0
 otherwise, so
 
+<!-- snippet: illustrative -->
 ```cpp
 shadow = step(sample(shadowMap, uv), depth);
 ```
@@ -414,7 +416,10 @@ auto specular = 0.25f * step(0.0f, nDotL) * pow(max(dot(v, r), 0.0f), 32.0f);
 auto shadow = shadowAmount(lightClip, nDotL);
 auto lightAmount = 1.0f - shadow;
 
-auto lit = (ambient + lightAmount * diffuse) * albedo + lightAmount * specular;
+// ... the floor's checkerboard darkens albedo ...
+
+auto lit =
+    (ambient + lightAmount * diffuse) * albedo + lightAmount * specular;
 ```
 
 The shadow removes only the light that comes **directly** from the sun:
@@ -445,7 +450,8 @@ auto size = frame.pixelSize();
 auto side = std::min(size.x, size.y) * 0.3f;
 auto margin = 12.0f * frame.backingScale();
 
-pass.setViewport({size.x - side - margin, size.y - side - margin, side, side});
+pass.setViewport(
+    {size.x - side - margin, size.y - side - margin, side, side});
 pass.draw(insetShader);
 pass.clearViewport();
 ```

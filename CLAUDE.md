@@ -37,6 +37,8 @@ detail.
 - `Tutorials/CMakeLists.txt` — one `add_subdirectory` per chapter, in order.
 - `Tutorials/NN-ChapterName/` — one chapter per directory.
 - `Apps/Tour/` — the `Tour` app: every chapter in one window (see below).
+- `Tools/check_snippets.py` — checks README code snippets against `Main.cpp`
+  (see "README snippets" below). Python 3, standard library only.
 
 ## The Tour
 
@@ -96,6 +98,39 @@ first call's options win.
   configure. Look up its API there — start with
   `build/_deps/eacp-src/Lib/eacp/GPU/README.md` and the examples under
   `build/_deps/eacp-src/Apps/GPU/`. Never modify it.
+
+## README snippets
+
+`Main.cpp` is the source of truth, and it carries no markers for the README:
+readers read it directly and in the Tour. Every ` ```cpp ` fence in a chapter's
+README must match that chapter's `Main.cpp` or be marked illustrative. When
+writing or editing a README, or changing a `Main.cpp`, run
+`python3 Tools/check_snippets.py` (or `cmake --build build --target
+check-snippets`) and make it pass; it exits non-zero and prints the README
+line, the closest `Main.cpp` lines and a diff for each failure.
+
+- A snippet matches when its lines appear in `Main.cpp` in order as one
+  contiguous block. Trailing whitespace and a uniform indent shift are ignored;
+  comment-only source lines (and blank lines beside them) may be left out, but
+  code lines may not, and comments the snippet shows must match.
+- A line that is only `...` or a comment starting with `...` (`// ...`,
+  `// ... the corners v0, v1, v2 ...`) elides any number of source lines.
+- Copy wrapping exactly as clang-format left it in `Main.cpp`; do not re-wrap
+  or abbreviate inside a line (`x = ...;` fails).
+- A snippet deliberately not from `Main.cpp` (another chapter's code, a
+  simplified or "don't do this" version, the hand-written `main()` the macro
+  stands for, an exercise's solution) gets `<!-- snippet: illustrative -->` on
+  the line directly above its fence, at the fence's indentation. Never change
+  `Main.cpp` to make a snippet pass; fix the snippet, then the prose around it.
+- Only ` ```cpp ` fences are checked: ` ```metal ` and bare fences (diagrams,
+  program output) are not.
+- Names the prose tells the reader to change ("set `useSlopeScaledBias` to
+  `false`") must exist in that chapter's `Main.cpp`; the checker does not test
+  this.
+
+The module is importable (`snippets_for_chapter(path)` returns each fence with
+its status and `Main.cpp` line ranges), for a site generator to link snippets
+to source lines.
 
 ## Build
 

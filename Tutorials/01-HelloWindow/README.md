@@ -200,6 +200,7 @@ LEARNEACP_CHAPTER(HelloWindow::HelloWindowView)
 every chapter ends with it. Built as this chapter's program, it is nothing more
 than the `main` you would write by hand:
 
+<!-- snippet: illustrative -->
 ```cpp
 int main()
 {

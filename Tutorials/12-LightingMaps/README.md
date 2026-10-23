@@ -17,6 +17,7 @@ frame, and the light that circles it glints off the metal and not the wood.
 
 Chapter 09's fragment shader had the whole surface description baked into it:
 
+<!-- snippet: illustrative -->
 ```cpp
 auto ambient = 0.12f;
 auto diffuse = max(dot(n, l), 0.0f);
@@ -222,7 +223,10 @@ else if (inFrame)
 }
 else
 {
-    // Planks running left to right. ...
+    // Planks running left to right. Each has its own tint, the
+    // grain is a ripple across it bent by stretched noise, and a
+    // thin dark gap separates neighbours.
+    // ... which plank this row is in, and whether it is in the gap ...
     auto tint = 0.82f + 0.3f * hash(plank, 7);
     auto bend = 5.0f * noise(fx * 0.025f, fy * 0.08f + plank * 9.0f);
     auto grain = 0.5f + 0.5f * std::sin(fy * 0.8f + bend * 2.0f);
@@ -265,14 +269,15 @@ struct Vertex
 };
 ```
 
-`makeCube` is chapter 09's, with one extra line per corner. `across1` points
+`makeCube` is chapter 09's, with one extra statement per corner. `across1` points
 right across the face seen from outside and `across2` points up, so a corner at
 `(-1, +1)` is the top-left one. UV (0, 0) is the top-left of the texture (chapter
 06), so the UV is the corner's across-coordinates remapped from -1..1 to 0..1,
 with v flipped:
 
 ```cpp
-auto uv = Vec2 {(corners[c][0] + 1.0f) * 0.5f, (1.0f - corners[c][1]) * 0.5f};
+auto uv =
+    Vec2 {(corners[c][0] + 1.0f) * 0.5f, (1.0f - corners[c][1]) * 0.5f};
 mesh.vertices[f * 4 + c] = {position, face.normal, uv};
 ```
 

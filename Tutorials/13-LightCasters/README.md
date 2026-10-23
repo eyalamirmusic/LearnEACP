@@ -512,6 +512,7 @@ point of view, which is chapter 20 (Shadow Mapping).
 5. Make the number of point lights a run-time value. Add a
    `Uniform<UInt> lightCount`, and replace the C++ `for` with the EDSL's own
    loop over a mutable variable, reading the buffer at a computed index:
+   <!-- snippet: illustrative -->
    ```cpp
    auto total = var(color);
    auto i = var(0u);
