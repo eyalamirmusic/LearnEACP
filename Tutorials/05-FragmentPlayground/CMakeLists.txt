@@ -1,6 +1,1 @@
-eacp_add_app(FragmentPlayground Main.cpp)
-target_link_libraries(FragmentPlayground PRIVATE eacp-gpu)
-set_target_properties(FragmentPlayground PROPERTIES MACOSX_BUNDLE TRUE)
-
-eacp_set_gui_subsystem(FragmentPlayground)
-set_default_target_setting(FragmentPlayground)
+learneacp_add_chapter()

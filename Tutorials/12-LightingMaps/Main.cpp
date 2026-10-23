@@ -4,6 +4,7 @@
 // wooden crate with a steel frame; a specular map says how shiny each texel is,
 // so the orbiting light glints off the steel and barely shows on the wood.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <array>
@@ -15,6 +16,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace LightingMaps
+{
 // The vertex of chapter 09 plus a texture coordinate.
 struct Vertex
 {
@@ -408,8 +411,6 @@ struct LightingMapsView final : GPUView
     float lightAngle = 0.85f;
     float cubeAngle = 1.0f;
 };
+} // namespace LightingMaps
 
-int main()
-{
-    return Graphics::runWindowedApp<LightingMapsView>();
-}
+LEARNEACP_CHAPTER(LightingMaps::LightingMapsView)

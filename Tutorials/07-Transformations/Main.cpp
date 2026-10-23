@@ -1,11 +1,14 @@
 // 07. Transformations: a quad that spins on its own centre while it orbits
 // the middle of the window, positioned by one 4x4 matrix built on the CPU.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Transformations
+{
 struct Vertex
 {
     Vec2 position;
@@ -102,8 +105,6 @@ struct TransformationsView final : GPUView
     float spinAngle = 0.0f;
     float orbitAngle = 0.0f;
 };
+} // namespace Transformations
 
-int main()
-{
-    return Graphics::runWindowedApp<TransformationsView>();
-}
+LEARNEACP_CHAPTER(Transformations::TransformationsView)

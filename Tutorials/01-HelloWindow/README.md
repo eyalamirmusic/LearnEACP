@@ -110,15 +110,25 @@ covers it properly, together with animating things over time.
 ## Walking through the code
 
 The whole program lives in `Main.cpp`. It starts with the one header that brings
-in the GPU module (and, through it, windows and views), and two `using`
-directives so we can write `GPUView` rather than `eacp::GPU::GPUView`:
+in the GPU module (and, through it, windows and views), a small header from this
+series that we will meet at the end of the file, and two `using` directives so
+we can write `GPUView` rather than `eacp::GPU::GPUView`:
 
 ```cpp
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 using namespace eacp;
 using namespace GPU;
+
+// Each chapter's code lives in a namespace named after the chapter.
+namespace HelloWindow
+{
 ```
+
+The namespace keeps every chapter's names (and later chapters have many
+`Vertex` structs and `makeCube` functions) out of each other's way, so all the
+chapters can live side by side in one program.
 
 Next comes our view. It derives from `GPUView` and overrides one function:
 
@@ -174,14 +184,32 @@ The colour is a member, so it is easy to change:
 1 (fully opaque). A `GPUView` is opaque by default, so the alpha of the clear
 colour does not show through to the desktop anyway.
 
-Finally, `main` hands our view type to `runWindowedApp`, which does the rest:
+Finally, after the namespace closes, one line hands our view type to
+`runWindowedApp`, which does the rest:
+
+```cpp
+} // namespace HelloWindow
+
+// LEARNEACP_CHAPTER is the program's main(): it calls runWindowedApp, which
+// creates the application, constructs the view, puts it in a window and runs
+// the event loop until the window is closed.
+LEARNEACP_CHAPTER(HelloWindow::HelloWindowView)
+```
+
+`LEARNEACP_CHAPTER` is the series' own macro from `LearnEACP/Chapter.h`, and
+every chapter ends with it. Built as this chapter's program, it is nothing more
+than the `main` you would write by hand:
 
 ```cpp
 int main()
 {
-    return Graphics::runWindowedApp<HelloWindowView>();
+    return Graphics::runWindowedApp<HelloWindow::HelloWindowView>();
 }
 ```
+
+The macro exists so the same file can also be built into a program that shows
+every chapter: there, instead of `main`, it adds the chapter to that program's
+list. Your own projects can simply write the `main` above.
 
 Build and run the `HelloWindow` target and you should get a window filled with
 dark teal. Resize it: the colour fills the new size, because each resize is a
@@ -194,9 +222,10 @@ new frame and each frame clears the whole image.
 2. Replace the argument to `beginPass` with nothing at all, `frame.beginPass()`.
    What colour do you get, and why? *Hint: look at the default of
    `RenderPassDescriptor::clearColor` in `Frame.h`.*
-3. Give the window a title and a starting size. *Hint: `runWindowedApp` takes a
-   `Graphics::WindowOptions` as its first argument; look at its fields in
-   `Window.h`.*
+3. Give the window a title and a starting size. *Hint: replace the
+   `LEARNEACP_CHAPTER` line with the hand-written `main` shown above;
+   `runWindowedApp` takes a `Graphics::WindowOptions` as its first argument,
+   so look at its fields in `Window.h`.*
 4. Make the colour slowly cycle. *Hint: call `setContinuous(true)` in a
    constructor so `render` runs every vsync, keep a frame counter, and compute
    the red channel from `0.5f + 0.5f * std::sin(counter * 0.02f)`. Chapter 04 (Uniforms)

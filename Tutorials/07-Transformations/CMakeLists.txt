@@ -1,6 +1,1 @@
-eacp_add_app(Transformations Main.cpp)
-target_link_libraries(Transformations PRIVATE eacp-gpu)
-set_target_properties(Transformations PROPERTIES MACOSX_BUNDLE TRUE)
-
-eacp_set_gui_subsystem(Transformations)
-set_default_target_setting(Transformations)
+learneacp_add_chapter()

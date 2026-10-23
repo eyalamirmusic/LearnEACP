@@ -3,6 +3,7 @@
 // zoom, and move with W/A/S/D (Q and E go down and up). Until you touch
 // anything, the camera circles the scene on its own.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <array>
@@ -13,6 +14,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Camera
+{
 struct Vertex
 {
     Vec3 position;
@@ -407,8 +410,6 @@ struct CameraView final : GPUView
     bool autopilot = true;
     float clock = 0.0f;
 };
+} // namespace Camera
 
-int main()
-{
-    return Graphics::runWindowedApp<CameraView>();
-}
+LEARNEACP_CHAPTER(Camera::CameraView)

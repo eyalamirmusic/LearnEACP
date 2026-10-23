@@ -5,10 +5,13 @@
 // out. The quad is two triangles that share two corners through an index
 // buffer.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 using namespace eacp;
 using namespace GPU;
 
+namespace Interpolation
+{
 // Each vertex now carries two attributes. Maths::Vec3 is already known to the
 // shader layer as a Float3, the same way Vec2 is a Float2.
 struct Vertex
@@ -80,8 +83,6 @@ struct InterpolationView final : GPUView
 
     InterpolationShader shader;
 };
+} // namespace Interpolation
 
-int main()
-{
-    return Graphics::runWindowedApp<InterpolationView>();
-}
+LEARNEACP_CHAPTER(Interpolation::InterpolationView)

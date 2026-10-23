@@ -4,10 +4,14 @@
 // with one colour. No shaders, no geometry - just the frame loop every later
 // chapter builds on.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 using namespace eacp;
 using namespace GPU;
 
+// Each chapter's code lives in a namespace named after the chapter.
+namespace HelloWindow
+{
 // A GPUView is a view (a rectangle inside a window) that owns a swapchain: a
 // small ring of images the GPU draws into while the display shows another one.
 // Override render() and the view calls it whenever a new frame is needed.
@@ -34,10 +38,9 @@ struct HelloWindowView final : GPUView
 
     Graphics::Color clearColor {0.20f, 0.30f, 0.30f};
 };
+} // namespace HelloWindow
 
-// runWindowedApp creates the application, constructs the view, puts it in a
-// window and runs the event loop until the window is closed.
-int main()
-{
-    return Graphics::runWindowedApp<HelloWindowView>();
-}
+// LEARNEACP_CHAPTER is the program's main(): it calls runWindowedApp, which
+// creates the application, constructs the view, puts it in a window and runs
+// the event loop until the window is closed.
+LEARNEACP_CHAPTER(HelloWindow::HelloWindowView)

@@ -6,6 +6,7 @@
 // percentage-closer filtering softens the edges. An inset in the corner shows
 // the shadow map itself; click the window to hide or show it.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <array>
@@ -16,6 +17,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace ShadowMapping
+{
 // Flip these to see the problems this chapter solves. Without the bias every lit
 // surface is striped with shadow acne; without PCF the shadow edges are hard
 // and show the shadow map's texels as stair steps.
@@ -477,8 +480,6 @@ struct ShadowMappingView final : GPUView
     float sunAngle = 2.4f;
     bool showInset = true;
 };
+} // namespace ShadowMapping
 
-int main()
-{
-    return Graphics::runWindowedApp<ShadowMappingView>();
-}
+LEARNEACP_CHAPTER(ShadowMapping::ShadowMappingView)

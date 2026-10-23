@@ -3,11 +3,14 @@
 // seconds: the vertex stage uses it to spin the quad and the fragment stage
 // uses it to make the colours pulse.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Uniforms
+{
 namespace
 {
 // The quad from the previous chapter: four corners, each with its own colour.
@@ -98,8 +101,6 @@ struct UniformsView final : GPUView
     SpinningShader shader;
     float seconds = 0.0f;
 };
+} // namespace Uniforms
 
-int main()
-{
-    return Graphics::runWindowedApp<UniformsView>();
-}
+LEARNEACP_CHAPTER(Uniforms::UniformsView)

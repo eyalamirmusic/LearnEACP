@@ -1,6 +1,1 @@
-eacp_add_app(DeferredShading Main.cpp)
-target_link_libraries(DeferredShading PRIVATE eacp-gpu)
-set_target_properties(DeferredShading PROPERTIES MACOSX_BUNDLE TRUE)
-
-eacp_set_gui_subsystem(DeferredShading)
-set_default_target_setting(DeferredShading)
+learneacp_add_chapter()

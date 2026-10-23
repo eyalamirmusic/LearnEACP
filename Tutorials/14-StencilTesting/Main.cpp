@@ -3,6 +3,7 @@
 // the screen; slightly larger copies are then drawn in a flat colour wherever
 // the stencil is *not* 1, which leaves only a rim around each cube.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <array>
 #include <cmath>
@@ -11,6 +12,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace StencilTesting
+{
 struct Vertex
 {
     Vec3 position;
@@ -323,8 +326,6 @@ struct StencilTestingView final : GPUView
     float cameraAngle = 0.0f;
     float spin = 0.0f;
 };
+} // namespace StencilTesting
 
-int main()
-{
-    return Graphics::runWindowedApp<StencilTestingView>();
-}
+LEARNEACP_CHAPTER(StencilTesting::StencilTestingView)

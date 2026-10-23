@@ -4,10 +4,13 @@
 // vertex stage places them, the rasterizer finds the pixels they cover and the
 // fragment stage colours each one.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 using namespace eacp;
 using namespace GPU;
 
+namespace HelloTriangle
+{
 // The CPU-side description of one vertex. This struct *is* the vertex layout:
 // vertexInput() below reads the field's type and offset straight out of it, so
 // there is no separate attribute table to keep in sync.
@@ -79,8 +82,6 @@ struct HelloTriangleView final : GPUView
 
     TriangleShader shader;
 };
+} // namespace HelloTriangle
 
-int main()
-{
-    return Graphics::runWindowedApp<HelloTriangleView>();
-}
+LEARNEACP_CHAPTER(HelloTriangle::HelloTriangleView)

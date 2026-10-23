@@ -7,6 +7,7 @@
 // bloomed and tone mapped. Drag to move the divider, scroll to change the
 // exposure.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <array>
@@ -17,6 +18,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace HDRBloom
+{
 struct Vertex
 {
     Vec3 position;
@@ -601,8 +604,6 @@ struct HDRBloomView final : GPUView
     float split = 0.5f;
     float elapsed = 0.0f;
 };
+} // namespace HDRBloom
 
-int main()
-{
-    return Graphics::runWindowedApp<HDRBloomView>();
-}
+LEARNEACP_CHAPTER(HDRBloom::HDRBloomView)

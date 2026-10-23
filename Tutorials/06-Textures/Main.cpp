@@ -4,6 +4,7 @@
 // right - and each sample is multiplied by a colour interpolated from the
 // vertices.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <cstdint>
 #include <vector>
@@ -12,6 +13,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Textures
+{
 namespace
 {
 struct Vertex
@@ -143,8 +146,6 @@ struct TexturesView final : GPUView
     TexturedShader nearest {{TextureFilter::Nearest, TextureAddressMode::Repeat}};
     TexturedShader linear {{TextureFilter::Linear, TextureAddressMode::Clamp}};
 };
+} // namespace Textures
 
-int main()
-{
-    return Graphics::runWindowedApp<TexturesView>();
-}
+LEARNEACP_CHAPTER(Textures::TexturesView)

@@ -3,6 +3,7 @@
 // this is a console program that prints what it computed and exits.
 #include <eacp/GPU/CpuCompute/CpuCompute.h>
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <cmath>
@@ -13,6 +14,8 @@
 using namespace eacp;
 using namespace GPU;
 
+namespace Compute
+{
 namespace
 {
 // Deliberately not a multiple of the group width (64), to show that the last,
@@ -207,10 +210,9 @@ int runCompute()
     return match ? 0 : 1;
 }
 } // namespace
+} // namespace Compute
 
-int main()
-{
-    // Runs runCompute once inside EACP's event loop, then exits with its
-    // return value. No window is ever opened.
-    return Apps::runConsole(runCompute);
-}
+// The console counterpart of LEARNEACP_CHAPTER. As main(), it calls
+// Apps::runConsole, which runs runCompute once inside EACP's event loop, then
+// exits with its return value. No window is ever opened.
+LEARNEACP_CONSOLE_CHAPTER(Compute::runCompute)

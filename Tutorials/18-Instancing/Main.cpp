@@ -5,6 +5,7 @@
 // to switch to one draw call per rock and compare the frame times printed to
 // the console.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <chrono>
 #include <cmath>
@@ -16,6 +17,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Instancing
+{
 // Per vertex, as in chapter 09: a position and a normal in the mesh's own
 // local space. Both meshes in this chapter use it.
 struct Vertex
@@ -436,8 +439,6 @@ struct InstancingView final : GPUView
     float renderSeconds = 0.0f;
     int frames = 0;
 };
+} // namespace Instancing
 
-int main()
-{
-    return Graphics::runWindowedApp<InstancingView>();
-}
+LEARNEACP_CHAPTER(Instancing::InstancingView)

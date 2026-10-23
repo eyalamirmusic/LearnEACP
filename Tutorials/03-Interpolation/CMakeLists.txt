@@ -1,6 +1,1 @@
-eacp_add_app(Interpolation Main.cpp)
-target_link_libraries(Interpolation PRIVATE eacp-gpu)
-set_target_properties(Interpolation PROPERTIES MACOSX_BUNDLE TRUE)
-
-eacp_set_gui_subsystem(Interpolation)
-set_default_target_setting(Interpolation)
+learneacp_add_chapter()

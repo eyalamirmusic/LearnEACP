@@ -1,6 +1,1 @@
-eacp_add_app(ShadowMapping Main.cpp)
-target_link_libraries(ShadowMapping PRIVATE eacp-gpu)
-set_target_properties(ShadowMapping PROPERTIES MACOSX_BUNDLE TRUE)
-
-eacp_set_gui_subsystem(ShadowMapping)
-set_default_target_setting(ShadowMapping)
+learneacp_add_chapter()

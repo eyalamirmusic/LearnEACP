@@ -4,6 +4,7 @@
 // sharpen, blur, edge detection) take turns every few seconds; a mouse click
 // moves on to the next one straight away.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <array>
 #include <cmath>
@@ -13,6 +14,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Framebuffers
+{
 struct Vertex
 {
     Vec3 position;
@@ -433,8 +436,6 @@ struct FramebuffersView final : GPUView
     float effectTime = 0.0f;
     float cameraAngle = 0.0f;
 };
+} // namespace Framebuffers
 
-int main()
-{
-    return Graphics::runWindowedApp<FramebuffersView>();
-}
+LEARNEACP_CHAPTER(Framebuffers::FramebuffersView)

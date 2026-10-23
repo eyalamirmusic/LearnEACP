@@ -5,6 +5,7 @@
 // right half with the normal map; Space cycles between the split, all flat and
 // all normal-mapped.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <cmath>
@@ -15,6 +16,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace NormalMapping
+{
 // Chapter 12's vertex, plus the two directions a normal map needs: which way
 // the texture's u and v axes run across the surface at this vertex.
 struct Vertex
@@ -508,8 +511,6 @@ struct NormalMappingView final : GPUView
     float lightAngle = 0.6f;
     float wallClock = 0.0f;
 };
+} // namespace NormalMapping
 
-int main()
-{
-    return Graphics::runWindowedApp<NormalMappingView>();
-}
+LEARNEACP_CHAPTER(NormalMapping::NormalMappingView)

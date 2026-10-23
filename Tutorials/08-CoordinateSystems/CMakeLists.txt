@@ -1,6 +1,1 @@
-eacp_add_app(CoordinateSystems Main.cpp)
-target_link_libraries(CoordinateSystems PRIVATE eacp-gpu)
-set_target_properties(CoordinateSystems PROPERTIES MACOSX_BUNDLE TRUE)
-
-eacp_set_gui_subsystem(CoordinateSystems)
-set_default_target_setting(CoordinateSystems)
+learneacp_add_chapter()

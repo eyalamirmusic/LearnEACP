@@ -32,4 +32,14 @@ CPMAddPackage(
         GIT_TAG main
         NO_CACHE YES)
 
+# learneacp_add_chapter, which every chapter's CMakeLists.txt calls.
+include(LearnEACP)
+
+# learneacp-chapter: the LEARNEACP_CHAPTER macro and the chapter registry.
+add_subdirectory(Lib)
+
 add_subdirectory(Tutorials)
+
+# Links every chapter's registry build into one program and checks they all
+# registered. Comes after Tutorials, whose chapters it links.
+add_subdirectory(Tools/ChapterRegistryCheck)

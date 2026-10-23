@@ -2,11 +2,14 @@
 // with a depth buffer so near faces hide far ones and back-face culling so the
 // hidden half is never drawn at all.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace CoordinateSystems
+{
 // Flip these to see what each one is for. With both off, the cube's faces draw
 // in index order, so a far face can paint over a near one. Either one alone
 // fixes a single convex cube; a real scene needs the depth buffer.
@@ -147,8 +150,6 @@ struct CoordinateSystemsView final : GPUView
     CubeShader shader;
     float angle = 0.0f;
 };
+} // namespace CoordinateSystems
 
-int main()
-{
-    return Graphics::runWindowedApp<CoordinateSystemsView>();
-}
+LEARNEACP_CHAPTER(CoordinateSystems::CoordinateSystemsView)

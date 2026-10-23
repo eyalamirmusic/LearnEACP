@@ -4,6 +4,7 @@
 // Each light type is a C++ helper function that returns its contribution, and
 // the point lights are read from a storage buffer the fragment stage indexes.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <array>
 #include <cmath>
@@ -12,6 +13,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace LightCasters
+{
 struct Vertex
 {
     Vec3 position;
@@ -418,8 +421,6 @@ struct LightCastersView final : GPUView
     LampShader lampShader;
     float elapsed = 0.0f;
 };
+} // namespace LightCasters
 
-int main()
-{
-    return Graphics::runWindowedApp<LightCastersView>();
-}
+LEARNEACP_CHAPTER(LightCasters::LightCastersView)

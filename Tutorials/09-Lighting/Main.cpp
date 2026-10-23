@@ -2,6 +2,7 @@
 // + specular) by a point light that orbits it. The light itself is drawn as a
 // small white cube so you can see where the light is coming from.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <array>
 #include <cmath>
@@ -10,6 +11,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Lighting
+{
 // Every vertex now carries a normal: the direction the surface faces at that
 // point, of length 1, in the same local space as the position.
 struct Vertex
@@ -224,8 +227,6 @@ struct LightingView final : GPUView
     float lightAngle = 0.0f;
     float cubeAngle = 0.0f;
 };
+} // namespace Lighting
 
-int main()
-{
-    return Graphics::runWindowedApp<LightingView>();
-}
+LEARNEACP_CHAPTER(Lighting::LightingView)

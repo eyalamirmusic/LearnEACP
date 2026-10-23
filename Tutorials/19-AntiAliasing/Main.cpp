@@ -4,6 +4,7 @@
 // with a magnified inset of the same spot. A mouse click steps the right-hand
 // side through the sample counts the GPU supports.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <cmath>
@@ -14,6 +15,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace AntiAliasing
+{
 struct Vertex
 {
     Vec3 position;
@@ -443,8 +446,6 @@ struct AntiAliasingView final : GPUView
     int paneHeight = 0;
     float angle = 0.6f;
 };
+} // namespace AntiAliasing
 
-int main()
-{
-    return Graphics::runWindowedApp<AntiAliasingView>();
-}
+LEARNEACP_CHAPTER(AntiAliasing::AntiAliasingView)

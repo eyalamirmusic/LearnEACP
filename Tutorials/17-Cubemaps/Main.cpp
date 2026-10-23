@@ -3,6 +3,7 @@
 // objects in it: a mirror cube and a glass sphere. Drag to orbit the camera,
 // scroll to move it nearer or further.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <cmath>
@@ -13,6 +14,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Cubemaps
+{
 struct Vertex
 {
     Vec3 position;
@@ -604,8 +607,6 @@ struct CubemapsView final : GPUView
     float distance = 5.0f;
     bool dragging = false;
 };
+} // namespace Cubemaps
 
-int main()
-{
-    return Graphics::runWindowedApp<CubemapsView>();
-}
+LEARNEACP_CHAPTER(Cubemaps::CubemapsView)

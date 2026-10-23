@@ -381,11 +381,19 @@ of the float. This is normal floating point behaviour, not a bug, and any
 GPU-versus-CPU test has to allow for it.
 
 ```cpp
+// The console counterpart of LEARNEACP_CHAPTER. As main(), it calls
+// Apps::runConsole, which runs runCompute once inside EACP's event loop, then
+// exits with its return value. No window is ever opened.
+LEARNEACP_CONSOLE_CHAPTER(Compute::runCompute)
+```
+
+Where every windowed chapter ends with `LEARNEACP_CHAPTER`, this one ends with
+its console counterpart. Written by hand it is this `main`:
+
+```cpp
 int main()
 {
-    // Runs runCompute once inside EACP's event loop, then exits with its
-    // return value. No window is ever opened.
-    return Apps::runConsole(runCompute);
+    return Apps::runConsole(Compute::runCompute);
 }
 ```
 

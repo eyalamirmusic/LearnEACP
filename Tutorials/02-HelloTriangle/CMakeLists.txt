@@ -1,6 +1,1 @@
-eacp_add_app(HelloTriangle Main.cpp)
-target_link_libraries(HelloTriangle PRIVATE eacp-gpu)
-set_target_properties(HelloTriangle PROPERTIES MACOSX_BUNDLE TRUE)
-
-eacp_set_gui_subsystem(HelloTriangle)
-set_default_target_setting(HelloTriangle)
+learneacp_add_chapter()

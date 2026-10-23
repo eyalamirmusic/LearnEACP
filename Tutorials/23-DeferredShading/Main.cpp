@@ -7,6 +7,7 @@
 // G-buffer's own depth. A row of insets along the bottom shows each G-buffer
 // attachment; a mouse click hides or shows it.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <array>
@@ -17,6 +18,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace DeferredShading
+{
 struct Vertex
 {
     Vec3 position;
@@ -738,8 +741,6 @@ struct DeferredShadingView final : GPUView
     bool showGBuffer = true;
     float elapsed = 0.0f;
 };
+} // namespace DeferredShading
 
-int main()
-{
-    return Graphics::runWindowedApp<DeferredShadingView>();
-}
+LEARNEACP_CHAPTER(DeferredShading::DeferredShadingView)

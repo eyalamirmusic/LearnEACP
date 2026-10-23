@@ -3,11 +3,14 @@
 // alone: a sky gradient, a pulsing sun cut off by a hard horizon, a soft halo
 // ring and a small moon orbiting it.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace FragmentPlayground
+{
 namespace
 {
 struct Vertex
@@ -133,8 +136,6 @@ struct FragmentPlaygroundView final : GPUView
     PlaygroundShader shader;
     float seconds = 0.0f;
 };
+} // namespace FragmentPlayground
 
-int main()
-{
-    return Graphics::runWindowedApp<FragmentPlaygroundView>();
-}
+LEARNEACP_CHAPTER(FragmentPlayground::FragmentPlaygroundView)

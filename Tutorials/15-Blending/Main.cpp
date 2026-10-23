@@ -4,6 +4,7 @@
 // so they are blended over what is behind them, which means they must be drawn
 // after everything opaque and sorted back to front as the camera orbits.
 #include <eacp/GPU/GPU.h>
+#include <LearnEACP/Chapter.h>
 
 #include <algorithm>
 #include <array>
@@ -15,6 +16,8 @@ using namespace eacp;
 using namespace GPU;
 using namespace Maths;
 
+namespace Blending
+{
 // Flip these to see the two problems this chapter is about. Unsorted, a window
 // drawn before one behind it is blended over a background that does not have
 // the far window in it yet. Writing depth as well, the far window is then not
@@ -479,8 +482,6 @@ struct BlendingView final : GPUView
 
     float cameraAngle = 0.0f;
 };
+} // namespace Blending
 
-int main()
-{
-    return Graphics::runWindowedApp<BlendingView>();
-}
+LEARNEACP_CHAPTER(Blending::BlendingView)
