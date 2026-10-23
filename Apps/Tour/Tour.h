@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <vector>
 
 namespace Tour
 {
@@ -17,8 +18,6 @@ std::string chapterLabel(const LearnEACP::ChapterInfo& chapter);
 eacp::Vector<std::string>
     chapterLabels(const std::vector<LearnEACP::ChapterInfo>& chapters);
 
-eacp::Graphics::WindowOptions windowOptions();
-
 // How the Tour opens, from the command line (see Main.cpp).
 struct Options
 {
@@ -27,11 +26,30 @@ struct Options
     LayoutMode layout = LayoutMode::SideBySide;
     bool sidebar = true;
 
+    // Chapters (indices, as chapterIndex) to switch to one after another once
+    // the window is open, `visitStep` seconds apart, as Cmd+[ / Cmd+] would.
+    std::vector<int> visits;
+    double visitStep = 0.25;
+
     // When set, the window is captured to this PNG `after` seconds after it
-    // opens, and the app exits: 0 if the file was written, 1 if not.
+    // opens (after the last visit, with visits), and the app exits: 0 if the
+    // file was written, 1 if not.
     std::string screenshot;
     double after = 2.0;
+
+    // A screenshot or a visit list makes the run scripted: its window neither
+    // takes the keyboard nor accepts the mouse, so whatever the person at the
+    // machine is doing meanwhile cannot scroll the code or switch chapters.
+    bool isScripted() const { return !screenshot.empty() || !visits.empty(); }
+
+    // The chapter the script ends on, which a screenshot checks it shows.
+    int finalChapter() const
+    {
+        return visits.empty() ? chapterIndex : visits.back();
+    }
 };
+
+eacp::Graphics::WindowOptions windowOptions(const Options& options);
 
 // Where the chapter's result goes: its GPUView, or for a console chapter the
 // pane with what it printed. Owns the chapter's view, and nothing else ever
@@ -112,7 +130,18 @@ private:
 
     void announce();
     void installMenu();
-    void takeScreenshot(const std::string& path, int attemptsLeft = 50);
+
+    // Shows options.visits[next] onwards, one per visitStep, then schedules
+    // the screenshot, if there is one.
+    void runScript(const Options& options, std::size_t next);
+    void scheduleScreenshot(const Options& options);
+
+    // Whether the window shows chapter `index`, its code from the first line;
+    // says what it shows instead on stderr when it does not.
+    bool isShowing(int index);
+    void takeScreenshot(const std::string& path,
+                        int expectedChapter,
+                        int attemptsLeft = 50);
 
     std::vector<LearnEACP::ChapterInfo> chapters = LearnEACP::registeredChapters();
     int current = 0;
@@ -122,7 +151,7 @@ private:
     CodePane code;
     ResultArea result;
     Layout layout {toolbar, sidebar, code, result};
-    eacp::Graphics::Window window {windowOptions()};
+    eacp::Graphics::Window window;
 
     // Lets a delayed callback tell whether the app is still there.
     std::shared_ptr<bool> alive = std::make_shared<bool>(true);

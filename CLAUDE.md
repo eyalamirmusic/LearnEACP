@@ -160,3 +160,13 @@ The Tour runs as `build/Apps/Tour/Tour.app/Contents/MacOS/Tour`:
   (default 2 s, then until the code is highlighted, up to 5 s more), renders the
   whole window to a PNG with `View::renderToImage` and exits 0, or 1 on failure.
   Bad arguments exit 2.
+- `--visit <N|Name,...> [--visit-step <seconds>]` switches to each listed
+  chapter in turn after opening (default 0.25 s apart, 0 allowed), as Cmd+[ /
+  Cmd+] would; a screenshot's `--after` then counts from the last switch.
+- A run with `--screenshot` or `--visit` is scripted: its window opens without
+  taking the keyboard and ignores the mouse, so a scroll, click or Cmd+[ from
+  whoever is using the machine cannot move the code or change the chapter (a
+  stray wheel notch once made a capture start at line 10). A screenshot also
+  fails (exit 1, reason on stderr) unless the window shows the expected chapter
+  (the last visited, else `--chapter`) with its code from line 1, and its
+  "Saved" line names the chapter.

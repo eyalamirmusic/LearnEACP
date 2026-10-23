@@ -5,10 +5,14 @@
 //   Tour --list                prints the chapters; exits 0 if all registered
 //   Tour --chapter 6 --layout stacked --screenshot shot.png [--after 3]
 //                              opens on a chapter, captures the window, exits
+//   Tour --chapter 6 --visit 7,23 [--visit-step 0.25] --screenshot shot.png
+//                              switches through chapters 7 and 23 first, as
+//                              Cmd+] would, and captures the last one
 #include "Tour.h"
 
 #include <eacp/Core/App/Args.h>
 
+#include <algorithm>
 #include <cstdio>
 
 using namespace eacp;
@@ -95,6 +99,7 @@ int run()
     auto chapter = std::string {"1"};
     auto layout = std::string {"side-by-side"};
     auto hideSidebar = false;
+    auto visits = std::string {};
     auto options = Options {};
 
     auto cli = Args::Parser {"Tour", "Every LearnEACP chapter in one window."};
@@ -105,6 +110,10 @@ int run()
     cli.option("--layout", layout, "how code and result share the window")
         .choices({"result", "side-by-side", "stacked", "code"});
     cli.flag("--no-sidebar", hideSidebar, "start with the chapter list hidden");
+    cli.option("--visit", visits, "then switch to each of these chapters in turn")
+        .hint("<n|name,...>");
+    cli.option("--visit-step", options.visitStep, "seconds between the switches")
+        .atLeast(0.0);
     cli.option("--screenshot",
                options.screenshot,
                "capture the window to this PNG, then exit")
@@ -124,6 +133,20 @@ int run()
         return cli.fail("no chapter '" + chapter + "' (try --list)");
 
     options.chapterIndex = *index;
+
+    for (auto start = std::size_t {0}; !visits.empty() && start <= visits.size();)
+    {
+        auto end = std::min(visits.find(',', start), visits.size());
+        auto name = visits.substr(start, end - start);
+        auto visit = findChapter(name);
+
+        if (!visit)
+            return cli.fail("no chapter '" + name + "' to visit (try --list)");
+
+        options.visits.push_back(*visit);
+        start = end + 1;
+    }
+
     options.layout = layoutNamed(layout);
     options.sidebar = !hideSidebar;
 

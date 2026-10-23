@@ -24,9 +24,16 @@ public:
     // per frame, so a long file takes a moment; a screenshot waits for this.
     bool isHighlighted() const;
 
+    // Whether the code view holds `source`'s text, as show() last put it there.
+    bool holds(const LearnEACP::ChapterSource* source) const;
+
+    // The line at the top of the code view: 0 unless it was scrolled.
+    std::size_t topLine();
+
     void resized() override;
 
 private:
+    const LearnEACP::ChapterSource* shown = nullptr;
     HeaderView header;
     ecode::CodeEditorView editor;
 };

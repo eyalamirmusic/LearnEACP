@@ -28,7 +28,7 @@ Vector<std::string>
     return labels;
 }
 
-WindowOptions windowOptions()
+WindowOptions windowOptions(const Options& tourOptions)
 {
     auto options = WindowOptions {};
 
@@ -38,6 +38,17 @@ WindowOptions windowOptions()
     options.minHeight = 480;
     options.title = "LearnEACP Tour";
     options.backgroundColor = Look::panel;
+
+    // A scripted window opens in front of whatever the person at the machine
+    // is doing. Without these, a scroll over it moved the code (a wheel notch
+    // is three detents of three lines: the capture started at line 10), and a
+    // click or a Cmd+[ typed into what they thought was their terminal switched
+    // the chapter under the script.
+    if (tourOptions.isScripted())
+    {
+        options.showInactive = true;
+        options.ignoresMouseEvents = true;
+    }
 
     return options;
 }
@@ -176,6 +187,7 @@ void* Layout::nativeFocusTarget()
 // --- App --------------------------------------------------------------------
 
 App::App(const Options& options)
+    : window {windowOptions(options)}
 {
     toolbar.sidebar.onClick = [this] { toggleSidebar(); };
     toolbar.result.onClick = [this] { setLayout(LayoutMode::Result); };
@@ -195,19 +207,46 @@ App::App(const Options& options)
     installMenu();
 
     show(options.chapterIndex);
+    runScript(options, 0);
+}
 
-    if (!options.screenshot.empty())
+void App::runScript(const Options& options, std::size_t next)
+{
+    if (next >= options.visits.size())
     {
-        auto delay = Time::MS {(std::int64_t) (options.after * 1000.0)};
-        auto weak = std::weak_ptr<bool> {alive};
-
-        Threads::callAfter(delay,
-                           [this, weak, path = options.screenshot]
-                           {
-                               if (!weak.expired())
-                                   takeScreenshot(path);
-                           });
+        scheduleScreenshot(options);
+        return;
     }
+
+    auto delay = Time::MS {(std::int64_t) (options.visitStep * 1000.0)};
+    auto weak = std::weak_ptr<bool> {alive};
+
+    Threads::callAfter(delay,
+                       [this, weak, options, next]
+                       {
+                           if (weak.expired())
+                               return;
+
+                           show(options.visits[next]);
+                           runScript(options, next + 1);
+                       });
+}
+
+void App::scheduleScreenshot(const Options& options)
+{
+    if (options.screenshot.empty())
+        return;
+
+    auto delay = Time::MS {(std::int64_t) (options.after * 1000.0)};
+    auto weak = std::weak_ptr<bool> {alive};
+
+    Threads::callAfter(
+        delay,
+        [this, weak, path = options.screenshot, chapter = options.finalChapter()]
+        {
+            if (!weak.expired())
+                takeScreenshot(path, chapter);
+        });
 }
 
 void App::show(int index)
@@ -328,7 +367,28 @@ void App::installMenu()
     setApplicationMenuBar(bar, window);
 }
 
-void App::takeScreenshot(const std::string& path, int attemptsLeft)
+bool App::isShowing(int index)
+{
+    const auto& chapter = chapters[(std::size_t) index];
+    const auto* source = LearnEACP::findChapterSource(chapter.name);
+    const auto topLine = code.topLine();
+
+    if (current == index && code.holds(source) && topLine == 0)
+        return true;
+
+    std::fprintf(stderr,
+                 "Tour: expected %s from line 1, but the window shows %s, its "
+                 "code %s, from line %zu\n",
+                 chapterLabel(chapter).c_str(),
+                 chapterLabel(chapters[(std::size_t) current]).c_str(),
+                 code.holds(source) ? "matching" : "not matching",
+                 topLine + 1);
+    return false;
+}
+
+void App::takeScreenshot(const std::string& path,
+                         int expectedChapter,
+                         int attemptsLeft)
 {
     // A shown code pane that is still being highlighted gets another 100 ms,
     // up to 5 s, so the capture has its colours.
@@ -338,11 +398,20 @@ void App::takeScreenshot(const std::string& path, int attemptsLeft)
         auto weak = std::weak_ptr<bool> {alive};
 
         Threads::callAfter(Time::MS {100},
-                           [this, weak, path, attemptsLeft]
+                           [this, weak, path, expectedChapter, attemptsLeft]
                            {
                                if (!weak.expired())
-                                   takeScreenshot(path, attemptsLeft - 1);
+                                   takeScreenshot(
+                                       path, expectedChapter, attemptsLeft - 1);
                            });
+        return;
+    }
+
+    // A capture of the wrong chapter, or of its code scrolled away, is a
+    // failure rather than a picture that looks plausible.
+    if (!isShowing(expectedChapter))
+    {
+        Apps::quit(1);
         return;
     }
 
@@ -367,7 +436,11 @@ void App::takeScreenshot(const std::string& path, int attemptsLeft)
         return;
     }
 
-    std::printf("Saved %s (%dx%d)\n", path.c_str(), image.width(), image.height());
+    std::printf("Saved %s (%dx%d): %s\n",
+                path.c_str(),
+                image.width(),
+                image.height(),
+                chapterLabel(chapters[(std::size_t) current]).c_str());
     std::fflush(stdout);
     Apps::quit(0);
 }

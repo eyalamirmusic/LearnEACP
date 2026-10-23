@@ -67,6 +67,8 @@ CodePane::CodePane()
 
 void CodePane::show(const LearnEACP::ChapterSource* source)
 {
+    shown = source;
+
     if (source == nullptr)
     {
         header.header.setText("(no source embedded)", {});
@@ -88,6 +90,17 @@ bool CodePane::isHighlighted() const
 {
     auto* highlighter = editor.highlighter();
     return highlighter == nullptr || !highlighter->hasPendingWork();
+}
+
+bool CodePane::holds(const LearnEACP::ChapterSource* source) const
+{
+    return shown == source
+           && editor.text() == (source != nullptr ? source->text() : "");
+}
+
+std::size_t CodePane::topLine()
+{
+    return editor.editorWidget().topVisibleLine();
 }
 
 void CodePane::resized()
